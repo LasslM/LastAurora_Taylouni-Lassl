@@ -25,8 +25,28 @@ public class Tests
             new List<Keyword>() { Keyword.Armor });
         
         Convoy.AddTailTruck(_tailTruck);
-    }
+        
+        #region Trailers
 
+        Trailer _trailer1 = new Trailer(
+            "Medical Wagon",
+            15_000,
+            4);
+        
+        Trailer _trailer2 = new Trailer(
+            "Reinforced Fuelagon",
+            10_000,
+            4);
+
+        Trailer _trailer3 = new Trailer(
+            "Wagon",
+            5_000,
+            3);
+        
+        Convoy.AddTrailers(new List<Trailer> { _trailer1, _trailer2, _trailer3 });
+        #endregion
+    }
+    
     [Test]
     public void HeadTailAssessment()
     {
@@ -44,5 +64,17 @@ public class Tests
     public void ConvoyTraction()
     {
         Assert.AreEqual(Convoy.Traction, 6);
+    }
+    
+    [Test]
+    public void ConvoyTrailersCount()
+    {
+        Assert.AreEqual(Convoy.Trailers.Count, 3);
+    }
+
+    [Test]
+    public void ConvoyTrailers() // Ermitteln Sie wieviel Anhänger noch zum Konvoi hinzugefügt werden können. 
+    {
+        Assert.AreEqual(Convoy.Traction - Convoy.Trailers.Count, 3);
     }
 }

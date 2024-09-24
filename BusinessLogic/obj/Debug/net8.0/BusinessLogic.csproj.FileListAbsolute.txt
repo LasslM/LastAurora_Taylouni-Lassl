@@ -1,0 +1,11 @@
+D:\Projects\School\5chit\WINN\LastAurora\BusinessLogic\bin\Debug\net8.0\BusinessLogic.deps.json
+D:\Projects\School\5chit\WINN\LastAurora\BusinessLogic\bin\Debug\net8.0\BusinessLogic.dll
+D:\Projects\School\5chit\WINN\LastAurora\BusinessLogic\bin\Debug\net8.0\BusinessLogic.pdb
+D:\Projects\School\5chit\WINN\LastAurora\BusinessLogic\obj\Debug\net8.0\BusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\School\5chit\WINN\LastAurora\BusinessLogic\obj\Debug\net8.0\BusinessLogic.AssemblyInfoInputs.cache
+D:\Projects\School\5chit\WINN\LastAurora\BusinessLogic\obj\Debug\net8.0\BusinessLogic.AssemblyInfo.cs
+D:\Projects\School\5chit\WINN\LastAurora\BusinessLogic\obj\Debug\net8.0\BusinessLogic.csproj.CoreCompileInputs.cache
+D:\Projects\School\5chit\WINN\LastAurora\BusinessLogic\obj\Debug\net8.0\BusinessLogic.dll
+D:\Projects\School\5chit\WINN\LastAurora\BusinessLogic\obj\Debug\net8.0\refint\BusinessLogic.dll
+D:\Projects\School\5chit\WINN\LastAurora\BusinessLogic\obj\Debug\net8.0\BusinessLogic.pdb
+D:\Projects\School\5chit\WINN\LastAurora\BusinessLogic\obj\Debug\net8.0\ref\BusinessLogic.dll

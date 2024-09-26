@@ -7,11 +7,11 @@ public class Truck
     public double Price { get; set; }
     public int Traction { get; set; }
     public int SlotsCount { get; set; } = 4;
-    public List<Keyword> Keywords { get; set; }
-    public IAddon? Addon { get; set; }
+    public List<KeywordTruck> Keywords { get; set; }
+    public Addon? Addon { get; set; }
     public List<ISlot> Slots { get; private set; }
 
-    public Truck(string code, int velocity, double price, int traction, List<Keyword> keywords)
+    public Truck(string code, int velocity, double price, int traction, List<KeywordTruck> keywords)
     {
         Code = code;
         Velocity = velocity;
@@ -37,11 +37,11 @@ public class Truck
     }
 }
 
-public enum Keyword
+public enum KeywordTruck
 {
     Chain_drive,
     Armor,
     Tesla_Weaponry,
     Heavy_Weaponry,
-    Vulcan_armor,
+    Vulcan_armor
 }

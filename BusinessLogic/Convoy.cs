@@ -64,7 +64,7 @@ public class Convoy
             Console.WriteLine("Number of Trailers exceeds Traction");
         }
     }
-    public void AddTrailers(IEnumerable<Trailer> trailers)
+    public void AddTrailers(List<Trailer> trailers)
     {
         foreach (var trailer in trailers)
         {
@@ -74,9 +74,9 @@ public class Convoy
             }
             else
             {
-                Console.WriteLine("Number of Trailers exceeds Traction");
-                break;
+                throw new Exception("Number of Trailers exceeds Traction");
             }
         }
     }
 }
+

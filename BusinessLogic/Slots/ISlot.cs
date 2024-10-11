@@ -3,6 +3,7 @@
 public interface ISlot
 {
     public EState State { get; set; }
+    
 }
 
 

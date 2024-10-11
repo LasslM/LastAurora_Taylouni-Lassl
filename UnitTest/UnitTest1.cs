@@ -15,7 +15,7 @@ public class Tests
             3,
             10_000,
             3, 
-            new List<KeywordTruck>() { KeywordTruck.Chain_drive , KeywordTruck.Tesla_Weaponry});
+            new List<Keyword>() { Keyword.Chain_drive , Keyword.Tesla_Weaponry});
         
         Convoy = new Convoy(_headTruck);
         
@@ -24,7 +24,7 @@ public class Tests
             4,
             140_000,
             3, 
-            new List<KeywordTruck>() { KeywordTruck.Armor });
+            new List<Keyword>() { Keyword.Armor });
         
         Convoy.AddTailTruck(_tailTruck);
         # endregion
@@ -60,27 +60,40 @@ public class Tests
             "Heavygun Addon",
             35_000,
             1,
-            new List<KeywordAddon>() {KeywordAddon.Heavygun, KeywordAddon.Heavygun}
+            new List<Keyword>() {Keyword.Heavygun, Keyword.Heavygun}
             );
         
         Addon _addon2 = new Addon(
             "Small Storageaddon",
             1_000,
             2,
-            new List<KeywordAddon>() {KeywordAddon.Addon}
+            new List<Keyword>() {Keyword.Addon}
         );
         
         Addon _addon3 = new Addon(
             "Armoraddon",
             2000,
             3,
-            new List<KeywordAddon>() {KeywordAddon.Addon}
+            new List<Keyword>() {Keyword.Addon}
         );
         
         Addon _addon4 = new Addon(
             "Nuclearreactor Addon",
             25_000,
-            1);
+            1,
+            new List<Keyword>() {Keyword.Addon});
+
+        Addon _addon5 = new Addon(
+            "Storage Addon",
+            30_000,
+            1,
+            new List<Keyword>() {Keyword.Addon});
+        
+        Convoy.HeadTruck.Addon = _addon1;
+        Convoy.Trailers[0].Addon = _addon2;
+        Convoy.Trailers[1].Addon = _addon3;
+        Convoy.Trailers[2].Addon = _addon4;
+        Convoy.TailTruck.Addon = _addon5;
 
         #endregion
     }
@@ -132,5 +145,20 @@ public class Tests
     gegen ein neues austauscht.
     */
     
+    [Test]
+    public void ConvoyAddons() // Ermitteln Sie wieviel Anhänger noch zum Konvoi hinzugefügt werden können. 
+    {
+        Assert.AreEqual(Convoy.HeadTruck.Addon.Code, "Heavygun Addon");
+        Assert.AreEqual(Convoy.Trailers[0].Addon.Code, "Small Storageaddon");
+        Assert.AreEqual(Convoy.Trailers[1].Addon.Code, "Armoraddon");
+        Assert.AreEqual(Convoy.Trailers[2].Addon.Code, "Nuclearreactor Addon");
+        Assert.AreEqual(Convoy.TailTruck.Addon.Code, "Storage Addon");
+    }
+    
+    [Test]
+    public void ConvoyTotalKeywords() // Ermitteln Sie wieviel Anhänger noch zum Konvoi hinzugefügt werden können. 
+    {
+        //Assert.AreEqual(Convoy.Keywords, new List<Keyword>() {Keyword.Chain_drive, Keyword.Tesla_Weaponry, Keyword.Armor, Keyword.Heavygun, Keyword.Addon});
+    }
     
 }

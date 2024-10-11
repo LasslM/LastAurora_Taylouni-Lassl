@@ -5,9 +5,9 @@ public class Addon
     public string Code { get; set; }
     public double Price { get; set; }
     public int SlotsCount { get; set; }
-    public List<KeywordAddon>? Keywords { get; set; }
+    public List<Keyword>? Keywords { get; set; }
 
-    public Addon(string code, double price, int slotsCount, List<KeywordAddon>? keywords)
+    public Addon(string code, double price, int slotsCount, List<Keyword>? keywords)
     {
         Code = code;
         Price = price;
@@ -23,9 +23,11 @@ public class Addon
     }
 }
 
-public enum KeywordAddon
+/*
+public enum Keyword
 {
     Heavygun,
     Twinlinked,
     Addon
 }
+*/

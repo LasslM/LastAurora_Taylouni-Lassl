@@ -6,25 +6,27 @@ public class Convoy
 {
     public Truck HeadTruck { get; private set; }
     public Truck? TailTruck { get; private set; }
-   
-    private List<Trailer> _trailers = new List<Trailer>();
-    public List<Trailer> Trailers
+    public List<Trailer> Trailers { get; private set; } = new List<Trailer>();
+
+    public List<Keyword> Keywords
     {
-        get => _trailers;
-        set
-        {
-            // Ensure the list contains no more than 5 items
-            if (value.Count <= 5)
-            {
-                _trailers = value;
-            }
-            else
-            {
-                _trailers = value.Take(5).ToList(); // Take only the first 5 items
-            }
+        get
+        {   
+            var keywords = new List<Keyword>();
+            //Keywords from HeadTruck, TailTruck and Trailers
+            keywords.AddRange(HeadTruck.Keywords);
+            keywords.AddRange(Trailers.SelectMany(trailer => trailer.Keywords));
+            keywords.AddRange(TailTruck.Keywords);
+            
+            //Keywords from Addons
+            keywords.AddRange(HeadTruck.Addon.Keywords);
+            keywords.AddRange(Trailers.SelectMany(trailer => trailer.Addon.Keywords));
+            keywords.AddRange(TailTruck.Addon.Keywords);
+            
+            keywords = keywords.Distinct().ToList();
+            return keywords;
         }
     }
-    
    
 
     public int Traction
@@ -55,22 +57,23 @@ public class Convoy
     }
     public void AddTrailer(Trailer trailer)
     {
-        if (_trailers.Count < Traction)
+        if (Trailers.Count <= Traction)
         {
-            _trailers.Add(trailer);
+            Trailers.Add(trailer);
         }
         else
         {
             Console.WriteLine("Number of Trailers exceeds Traction");
         }
     }
+    
     public void AddTrailers(List<Trailer> trailers)
     {
         foreach (var trailer in trailers)
         {
-            if (_trailers.Count < Traction)
+            if (Trailers.Count <= Traction)
             {
-                _trailers.Add(trailer);
+                Trailers.Add(trailer);
             }
             else
             {

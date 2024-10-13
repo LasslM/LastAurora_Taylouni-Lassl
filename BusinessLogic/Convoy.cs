@@ -7,7 +7,15 @@ public class Convoy
     public Truck HeadTruck { get; private set; }
     public Truck? TailTruck { get; private set; }
     public List<Trailer> Trailers { get; private set; } = new List<Trailer>();
-
+    
+    public int remainingTrailers
+    {
+        get
+        {
+            return Traction - Trailers.Count;
+        }
+    }
+    
     public List<Keyword> Keywords
     {
         get
@@ -15,20 +23,23 @@ public class Convoy
             var keywords = new List<Keyword>();
             //Keywords from HeadTruck, TailTruck and Trailers
             keywords.AddRange(HeadTruck.Keywords);
-            keywords.AddRange(Trailers.SelectMany(trailer => trailer.Keywords));
+            keywords.AddRange(Trailers.SelectMany(trailer => trailer?.Keywords??new List<Keyword>()));
             keywords.AddRange(TailTruck.Keywords);
             
             //Keywords from Addons
+            /*
             keywords.AddRange(HeadTruck.Addon.Keywords);
             keywords.AddRange(Trailers.SelectMany(trailer => trailer.Addon.Keywords));
             keywords.AddRange(TailTruck.Addon.Keywords);
+            */
             
             keywords = keywords.Distinct().ToList();
+            if (keywords.Count == 0) return new List<Keyword>();
             return keywords;
         }
     }
    
-
+    
     public int Traction
     {
         get
@@ -45,7 +56,6 @@ public class Convoy
             return TailTruck.Velocity;
         }
     }
-
     
     public Convoy(Truck headTruck)
     {
@@ -55,6 +65,7 @@ public class Convoy
     {
         TailTruck = truck;
     }
+    
     public void AddTrailer(Trailer trailer)
     {
         if (Trailers.Count <= Traction)
@@ -63,10 +74,10 @@ public class Convoy
         }
         else
         {
-            Console.WriteLine("Number of Trailers exceeds Traction");
+            throw new Exception("Number of Trailers exceeds Traction");
         }
     }
-    
+
     public void AddTrailers(List<Trailer> trailers)
     {
         foreach (var trailer in trailers)
@@ -80,6 +91,16 @@ public class Convoy
                 throw new Exception("Number of Trailers exceeds Traction");
             }
         }
+    }
+    
+    public bool ContainsKeyword(Keyword keyword)
+    {
+        if (Keywords.Contains(keyword))
+        {
+            return true;
+        }
+
+        return false;
     }
 }
 

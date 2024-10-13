@@ -2,14 +2,12 @@
 
 public class Trailer : Vehicle
 {
-
     public Trailer(string code, double price, int slotsCount)
     {
         Code = code;
         Price = price;
         SlotsCount = slotsCount;
     }
-    
 }
 
 /*

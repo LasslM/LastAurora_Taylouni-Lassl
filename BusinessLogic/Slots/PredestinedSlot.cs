@@ -1,6 +1,6 @@
 ﻿namespace BusinessLogic;
 
-public class PredestinedSlot : ISlot
+public class PredestinedSlot<T>  : ASlot where T : ICargo
 {
-    public EState State { get; set; } = EState.Active;
+    public T? Cargo { get; set; }
 }

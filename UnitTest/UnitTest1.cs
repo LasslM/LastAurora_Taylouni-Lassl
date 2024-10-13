@@ -96,6 +96,21 @@ public class Tests
         Convoy.TailTruck.Addon = _addon5;
 
         #endregion
+
+        #region Slots
+        
+        
+        DefaultSlot _slot1 = new DefaultSlot();
+        DefaultSlot _slot2 = new DefaultSlot();
+        PredestinedSlot<Crew> _slot3 = new PredestinedSlot<Crew>();
+        Machinery _slot4 = new Machinery();
+        
+        Convoy.HeadTruck.AddSlot(_slot1);
+        Convoy.HeadTruck.AddSlot(_slot2);
+        Convoy.HeadTruck.AddSlot(_slot3);
+        Convoy.HeadTruck.AddSlot(_slot4);
+
+        #endregion
     }
     
     /*
@@ -123,6 +138,12 @@ public class Tests
     public void ConvoyTraction()
     {
         Assert.AreEqual(Convoy.Traction, 6);
+    }
+    
+    [Test]
+    public void ConvoyRemainingTrailersCount()
+    {
+        Assert.AreEqual(Convoy.remainingTrailers, 3);
     }
     
     [Test]
@@ -156,9 +177,49 @@ public class Tests
     }
     
     [Test]
-    public void ConvoyTotalKeywords() // Ermitteln Sie wieviel Anhänger noch zum Konvoi hinzugefügt werden können. 
+    public void ConvoyContainsKeyword() // Gesamtwert des Konvois berechnen
     {
-        //Assert.AreEqual(Convoy.Keywords, new List<Keyword>() {Keyword.Chain_drive, Keyword.Tesla_Weaponry, Keyword.Armor, Keyword.Heavygun, Keyword.Addon});
+        Assert.AreEqual(Convoy.ContainsKeyword(Keyword.Chain_drive), true);
+        Assert.AreEqual(Convoy.ContainsKeyword(Keyword.Twinlinked), false);
     }
+    
+    [Test]
+    public void ConvoyTotalKeywords() // Gesamtwert des Konvois berechnen
+    {
+        Assert.AreEqual(
+            Convoy.Keywords.Order(),
+            new List<Keyword>() {Keyword.Chain_drive, Keyword.Tesla_Weaponry,  Keyword.Heavygun, Keyword.Armor, Keyword.Addon }.Order()
+            );
+    }
+    
+    [Test]
+    public void ConvoyAddMoreSlotsThanPermmited() // Gesamtwert des Konvois berechnen
+    {
+        try
+        {
+            Convoy.HeadTruck.AddSlot(new DefaultSlot());
+            Assert.Fail();
+        }
+        catch (Exception e)
+        {
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void ConvoyAddAmmunitionSlotToCrewSlot() // Gesamtwert des Konvois berechnen
+    {
+        try
+        {
+            Convoy.HeadTruck.Slots[2] = new PredestinedSlot<Ammunition>();
+            Assert.Fail();
+        }
+        catch (Exception e)
+        {
+            Assert.Pass();
+        }
+        
+    }
+    
     
 }

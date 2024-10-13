@@ -11,7 +11,7 @@ public class Truck : Vehicle
         Velocity = velocity;
         Price = price;
         Traction = traction;
-        Keywords = keywords;
+        AddKeywords(keywords);
     }
     
     

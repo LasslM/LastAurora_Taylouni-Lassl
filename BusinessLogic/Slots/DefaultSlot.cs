@@ -1,6 +1,6 @@
 ﻿namespace BusinessLogic;
 
-public class DefaultSlot : ISlot
+public class DefaultSlot : ASlot
 {
-    public EState State { get; set; } = EState.Active;
+    public ICargo? Cargo { get; set; }
 }

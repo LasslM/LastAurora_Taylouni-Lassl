@@ -113,14 +113,6 @@ public class Tests
         #endregion
     }
     
-    /*
-    a) Anlegen eines Konvois mit 2 Zugmaschinen und 2 Anhängern. Prüfen Sie welche der Zugmaschinen
-    die Fordere und welche die Hintere ist. Fragen Sie die Geschwindigkeit des Konvois ab.
-    Fragen Sie die Zugkraft des Konvois ab. Ermitteln Sie wieviel Anhänger noch zum Konvoi hinzugefügt
-    werden können. Wieviel Anhänger hat der Konvoi. Überlegen Sie sich eine sinnvolle Fassade für
-    den Konvoi.
-    */
-    
     [Test]
     public void HeadTailAssessment()
     {

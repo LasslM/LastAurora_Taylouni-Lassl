@@ -7,6 +7,19 @@ namespace ConsoleApp
 {
     class Program
     {
+        /*
+         * 
+         *  HINWEIS zur Anzeige des Konvois:
+         * 
+         *  Cyan:       Trucks (Head und Tail)
+         *  Dunkelblau: Trailer
+         *
+         *  Addons stehen bei den jeweiligen Trucks oder
+         *  Trailer in Klammern () dabei.
+         * 
+         */
+        
+        
         // All available cards
         static List<Truck> TruckCards = new List<Truck>();
         static List<Trailer> TrailerCards = new List<Trailer>();
@@ -17,7 +30,7 @@ namespace ConsoleApp
         static bool gameRunning = true;
         
         // Text for display
-        static List<string> startGameOptions = new List<string>{"Neuen Konvoy erstellen"};
+        static List<string> startGameOptions = new List<string>{"Neuen Konvoi erstellen"};
         static List<string> editConvoyOptions = new List<string>{"Truck hinzufügen", "Trailer hinzufügen", "Addons hinzufügen"};
 
         static void InitializeCards()
@@ -128,7 +141,6 @@ namespace ConsoleApp
         static void EditConvoyScreen()
         {
             var input = DefaultInterface("Was möchtest du tun?", editConvoyOptions);
-            
             Console.Clear();
             
             switch (input)
@@ -173,6 +185,7 @@ namespace ConsoleApp
             }
         }
         
+        
         // --- INTERFACES ---------------------------------------------
 
         static string DefaultInterface(string headline, List<string> displaylist)
@@ -202,8 +215,7 @@ namespace ConsoleApp
             return Console.ReadLine();
         }
         
-        // Muss noch optimiert werden
-        #region AddCardsInterface
+        #region AddCardsInterfaces
         static string AddCardsInterface(string headline, List<Truck> displaylist)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -285,7 +297,7 @@ namespace ConsoleApp
             {
                 var input = Convert.ToInt32(AddCardsInterface("Truck hinzufügen", TruckCards))-1;
 
-                Convoy = new Convoy(TruckCards[input]);
+                Convoy = new Convoy(new Truck(TruckCards[input].Code, TruckCards[input].Velocity, TruckCards[input].Price, TruckCards[input].Traction, TruckCards[input].Keywords));
                 Console.WriteLine($"Neuer Konvoi mit {TruckCards[input].Code} erstellt!");
                 Console.WriteLine("Drücken Sie eine Taste, um fortzufahren...");
                 Console.ReadKey();
@@ -297,8 +309,7 @@ namespace ConsoleApp
             catch
             {
                 Console.Clear();
-                Console.WriteLine("Vorgang wird abgebrochen");
-                Console.WriteLine("Drücken Sie eine Taste, um fortzufahren...");
+                Console.WriteLine("Vorgang wird abgebrochen. Drücken Sie eine Taste, um fortzufahren...");
                 Console.ReadKey();
             }
             Console.Clear();
@@ -309,7 +320,7 @@ namespace ConsoleApp
             try
             {
                 var input = Convert.ToInt32(AddCardsInterface("Trailer hinzufügen", TrailerCards))-1;
-                Convoy.AddTrailer(TrailerCards[input]);
+                Convoy.AddTrailer(new Trailer(TrailerCards[input].Code, TrailerCards[input].Price, TrailerCards[input].SlotsCount));
             }
             
             catch
@@ -326,7 +337,7 @@ namespace ConsoleApp
             try
             {
                 var input = Convert.ToInt32(AddCardsInterface("Truck hinzufügen", TruckCards))-1;
-                Convoy.AddTailTruck(TruckCards[input]);
+                Convoy.AddTailTruck(new Truck(TruckCards[input].Code, TruckCards[input].Velocity, TruckCards[input].Price, TruckCards[input].Traction, TruckCards[input].Keywords));
             }
             
             catch
@@ -347,19 +358,22 @@ namespace ConsoleApp
 
                 Console.Clear();
                 Console.WriteLine($"Zu welchem Komponent soll {AddonCards[input].Code} hinzugefügt werden?");
+
+                int rowid = 1;
+                Console.WriteLine($"{rowid}. {Convoy.HeadTruck.Code}");
                 
-                
-                Console.WriteLine($"1. {Convoy.HeadTruck.Code}");
-                if (Convoy.TailTruck != null){
-                    Console.WriteLine($"2. {Convoy.TailTruck.Code}");
-                }
-                
+                rowid++;
                 if (Convoy.Trailers != null)
                 {
-                    foreach (var trailer in Convoy.Trailers.Select((value, index) => new { value, index }))
+                    foreach (var trailer in Convoy.Trailers)
                     {
-                        Console.WriteLine($"{trailer.index+3}. {trailer.value.Code}");
+                        Console.WriteLine($"{rowid}. {trailer.Code}");
+                        rowid++;
                     }
+                }
+                
+                if (Convoy.TailTruck != null){
+                    Console.WriteLine($"{rowid} {Convoy.TailTruck.Code}");
                 }
                 
                 Console.Write("\nNummer eingeben: ");
@@ -367,14 +381,32 @@ namespace ConsoleApp
 
                 try
                 {
+                    if (inputComponent == 1)
+                    {
+                        Convoy.HeadTruck.Addon = AddonCards[input];
+                    }
+                    else if (inputComponent > 1 && inputComponent <= 1+Convoy.Trailers.Count)
+                    {
+                        int trailerIndex = inputComponent - 2;
+                        Convoy.Trailers[trailerIndex].Addon = AddonCards[input];
+                    }
+                    else if (inputComponent == rowid && Convoy.TailTruck != null)
+                    {
+                        Convoy.TailTruck.Addon = AddonCards[input];
+                    }
 
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Ungültige Komponentenauswahl.");
+                    }
                 }
 
                 catch
                 {
-                    
+                    Console.Clear();
+                    Console.WriteLine("Vorgang wird abgebrochen");
                 }
-                
             }
             
             catch
@@ -394,21 +426,23 @@ namespace ConsoleApp
         static void DisplayConvoy()
         {
             Console.WriteLine("\nDein Konvoi: ");
-
-            Console.Write($"{Convoy.HeadTruck.Code}");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write($"{Convoy.HeadTruck.Code} ({Convoy.HeadTruck.Addon?.Code??""})");
             
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
             if (Convoy.Trailers.Any())
             {
                 Console.Write(" ---");
                 foreach (Trailer t in Convoy.Trailers)
                 {
-                    Console.Write($" {t.Code} -");
+                    Console.Write($" {t.Code} ({t.Addon?.Code??""}) -");
                 }
             }
-            if (Convoy.TailTruck != null){Console.Write($"-- {Convoy.TailTruck.Code}");}
-          
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            if (Convoy.TailTruck != null){Console.Write($"-- {Convoy.TailTruck.Code} ({Convoy.TailTruck.Addon?.Code??""})");}
+            Console.ResetColor();
 
-        Console.WriteLine();
+            Console.WriteLine();
         }
         static void DisplayDetailedConvoy()
         {
